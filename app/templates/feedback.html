@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('background-image.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .feedback-box {
+            width: 80%;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .feedback-text {
+            white-space: pre-wrap;
+            font-size: 18px;
+            line-height: 1.5;
+            margin: 0;
+            color: hsl(0, 90%, 50%); /* New color for the feedback text */
+        }
+
+        .hint-text {
+            color: red;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .btn-container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 style="color: #4caf50;">Thank You!</h1>
+            <p style="color: #4caf50;">Thank you for taking part in the mock interview. Here's your feedback:</p>
+        </div>
+        <div class="feedback-box">
+            {% if hint_used %}
+                <p class="hint-text">You have used a hint. Please note that using hints could negatively impact your overall interview score.</p>
+            {% endif %}
+            {% if flag_code %}
+                <p class="hint-text">No code was provided for the problem. Please consider including your code solution in the future.</p>
+            {% endif %}
+            <pre class="feedback-text">{{ content }}</pre>
+        </div>
+        <div class="btn-container">
+            <a href="#" class="btn">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+

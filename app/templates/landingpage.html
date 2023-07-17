@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Mock Interview Landing Page</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url("{% static 'codeworld-Color.jpg' %}");
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container-fluid {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* Align items to the top */
+      align-items: center;
+    }
+
+    h1 {
+      color: red;
+      font-size: 36px;
+      margin-bottom: 20px;
+      margin-top: 40px; /* Added margin-top to move the text to the top */
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .problem-buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 420px; /* Adjusted margin-top to create space between the text and buttons */
+    }
+
+    .problem-button {
+      width: 200px;
+      height: 80px;
+      font-size: 24px;
+      margin: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .problem-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <h1 class="display-4">Welcome to Mock Interview!</h1>
+  
+    <p class="lead">Please select one of the following problems:</p>
+  
+    <div class="problem-buttons">
+      <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-primary problem-button" type="submit" name="problem1">Problem 1</button>
+        <button class="btn btn-primary problem-button" type="submit" name="problem2">Problem 2</button>
+        <button class="btn btn-primary problem-button" type="submit" name="problem3">Problem 3</button>
+        <button class="btn btn-primary problem-button" type="submit" name="problem4">Problem 4</button>
+        <button class="btn btn-primary problem-button" type="submit" name="problem5">Problem 5</button>
+      </form>
+    </div>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

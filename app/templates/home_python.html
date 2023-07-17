@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code Execution</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .code-box {
+            width: 80%;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .problem-statement {
+            width: 80%;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            white-space: pre-line;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            tab-size: 4;
+        }
+
+        .btn-submit {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #ffffff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+
+        .btn-hint {
+            display: inline-block;
+            margin-right: 10px;
+            padding: 10px 20px;
+            background-color: #2196f3;
+            color: #ffffff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .btn-hint:hover {
+            background-color: #1e88e5;
+        }
+
+        .output-box {
+            width: 80%;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        pre {
+            white-space: pre-wrap;
+        }
+        .dropdown {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .dropdown select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .btn-dropdown {
+            background-color: #f8f9fa;
+            border: none;
+            color: #333;
+            cursor: pointer;
+            padding: 8px 16px;
+        }
+
+        .btn-dropdown:hover {
+            background-color: #e9ecef;
+        }
+        .timer {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .timer.warning {
+            color: red;
+        }
+        
+        .warning-alert {
+            text-align: center;
+            color: red;
+            font-weight: bold;
+        }
+
+        /* CSS styling for the custom alert box */
+        .custom-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 80%;
+    padding: 20px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    text-align: center;
+    display: none;
+    z-index: 9999;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.custom-alert .alert-heading {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.custom-alert .alert-content {
+    margin-bottom: 10px;
+    white-space: pre-wrap;
+}
+
+.custom-alert .btn-continue {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #dc3545;
+    border: none;
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.custom-alert .btn-continue:hover {
+    background-color: #c82333;
+}
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="timer" id="timer">25:00</div> <!-- Timer display -->
+        
+
+        <div class="header">
+            <h2>Code Execution</h2>
+        </div>
+        <div id="custom-alert" class="alert alert-danger alert-dismissible fade" role="alert">
+            <p class="mb-0 text-center">Only 2 minutes remaining!</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+
+    
+        <div class="problem-statement">
+            <h3>Problem Statement</h3>
+            <!-- Add your problem statement here -->
+            {{ problem }}
+        </div>
+        <div class="code-box">
+            <form method="post">
+                {% csrf_token %}
+                <textarea name="code" rows="10" tabindex="1">{{ code }} </textarea>
+                <div class="dropdown">
+                    <select id="language-select" name="language">
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                    </select>
+                </div>
+                <button class="btn-submit" name = "run"type="submit">Run Code</button>
+                <button class="btn-hint" name = "hint" type="submit">Hint</button>
+                <button class="btn-hint" name = "feedback" id="feedback-button" type="submit">Get Feedback</button>
+            </form>
+        </div>
+        <div class="timer-container">
+            <div id="timer" class="timer"></div>
+        </div>
+        
+
+
+        {% if output %}
+        <div class="output-box">
+            <h3>Output</h3>
+            <pre>{{ output }}</pre>
+        </div>
+        {% endif %}
+    </div>
+    {% if hint %}
+    <div class="custom-alert">
+        <p class="alert-heading">Hint</p>
+        <p>{{ hint }}</p>
+        <button class="btn-continue" onclick="continueExecution()">Continue</button>
+    </div>
+    {% endif %}
+
+    <script>
+            // Function to handle tab key press event
+        document.addEventListener("keydown", function(e) {
+        if (e.key === "Tab" && document.activeElement.tagName.toLowerCase() === "textarea") {
+            e.preventDefault();
+            var textarea = document.activeElement;
+            var start = textarea.selectionStart;
+            var end = textarea.selectionEnd;
+            textarea.value = textarea.value.substring(0, start) + "\t" + textarea.value.substring(end);
+            textarea.selectionStart = textarea.selectionEnd = start + 1;
+        }
+    });
+    </script>
+
+    <script>
+        // Retain the code in the code box after submission
+        document.addEventListener("DOMContentLoaded", function () {
+            var codeBox = document.querySelector("textarea[name='code']");
+            codeBox.value = "{{ code }}";
+        });
+    </script>
+    <script>
+    const form = document.getElementById('code-form');
+    const select = document.getElementById('language-select');
+
+    // Add an event listener to the select element for change event
+    select.addEventListener('change', function() {
+        // Get the selected option value
+        const selectedValue = select.value;
+
+        // Hardcoded redirect URL based on the selected value
+        let redirectUrl;
+        
+        if (selectedValue === "java") {
+            redirectUrl = "interview_java";  // Change this URL as per your Django URL configuration
+        } else {
+            redirectUrl = "interview_python";  // Change this URL as per your Django URL configuration
+        } window.location.href = redirectUrl;
+    });
+    </script>
+    <script>
+    function startTimer(duration, display) {
+        var timer = duration, minutes, seconds;
+        var timerInterval = setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(timerInterval);
+                document.getElementById('feedback-button').click();
+            } else if (timer === 120) {
+                showAlert();
+            }
+
+            // Store the remaining time in session storage
+            sessionStorage.setItem("remainingTime", timer);
+        }, 1000);
+    }
+
+    // Function to show the custom alert box
+    function showAlert() {
+        var alertBox = document.getElementById('custom-alert');
+        alertBox.classList.add('show');
+    }
+
+    // Function to hide the custom alert box and continue with the code execution
+    function continueExecution() {
+        document.getElementById('custom-alert').classList.remove('show');
+    }
+
+    // Retrieve the remaining time from session storage or set it to 25 minutes (default)
+    var remainingTime = sessionStorage.getItem("remainingTime") || 50.15 * 60;
+
+    // Get the timer element
+    var timerDisplay = document.getElementById('timer');
+
+    // Start the timer
+    startTimer(remainingTime, timerDisplay);
+
+    // Add event listener to the "Close" button in the custom alert box
+    var closeButton = document.querySelector('.close');
+    closeButton.addEventListener('click', continueExecution);
+</script>
+    <!-- Add the remaining script code at the end of the file -->
+    <script>
+        // Function to show the custom alert box
+        function showAlert() {
+            var alertBox = document.querySelector('.custom-alert');
+            alertBox.style.display = 'block';
+        }
+
+        // Function to hide the custom alert box and continue with the code execution
+        function continueExecution() {
+            var alertBox = document.querySelector('.custom-alert');
+            alertBox.style.display = 'none';
+        }
+
+        // Add this code after the startTimer function in the existing script tag
+        // Check if the hint variable is not empty and show the alert box
+        {% if hint %}
+        showAlert();
+        {% endif %}
+    </script>
+  
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
