@@ -9,7 +9,7 @@ hint_used = 0
 problem =None
 test_cases =  ""
 flag_code = 0
-openai.api_key = "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"
+openai.api_key = "Please enter your GPT API Key here"
 openai.api_key = openai.api_key
 
 content = None
